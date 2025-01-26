@@ -1,8 +1,8 @@
 .fishing-game {
-  width: 100vw;
+  width: calc(100vw - 200px);
   height: 100vh;
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
   background-color: #f5f5f5;
   overflow: hidden;
@@ -34,10 +34,10 @@
 
 .stats {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   gap: 20px;
   font-size: 1.2em;
-  margin: 5px 0;
+  margin: 30px 0;
   color: #000000;
 }
 
@@ -130,39 +130,59 @@ button:disabled {
 }
 
 .fish-emoji {
-  font-size: 1.5em;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  transform: scaleX(-1);
+  transition: transform 0.3s ease;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.fish-name {
-  flex-grow: 1;
-  color: #000000;
+.fish-spot[title="Small Fish"] .fish-emoji {
+  width: 40px;
+  height: 40px;
+  background-image: url('./assets/small_fish.png');
 }
 
-.fish-value {
-  font-weight: bold;
-  color: #000000;
+.fish-spot[title="Medium Fish"] .fish-emoji {
+  width: 120px;
+  height: 120px;
+  background-image: url('./assets/medium_fish.png');
 }
 
-.common {
-  border-left: 4px solid #90caf9;
+.fish-spot[title="Large Fish"] .fish-emoji {
+  width: 160px;
+  height: 160px;
+  background-image: url('./assets/large_fish.png');
 }
 
-.uncommon {
-  border-left: 4px solid #66bb6a;
+.fish-spot[title="Rare Fish"] .fish-emoji {
+  width: 60px;
+  height: 60px;
+  background-image: url('./assets/rare_fish.png');
+  filter: drop-shadow(0 0 3px rgba(121, 87, 194, 0.6));
 }
 
-.rare {
-  border-left: 4px solid #7e57c2;
+.fish-spot[title="Epic Fish"] .fish-emoji {
+  width: 120px;
+  height: 120px;
+  background-image: url('./assets/epic_fish.png');
+  filter: drop-shadow(0 0 5px rgba(233, 30, 99, 0.6));
 }
 
-.legendary {
-  border-left: 4px solid #ffd700;
-  animation: glow 2s infinite;
+.fish-spot[title="Legendary Fish"] .fish-emoji {
+  width: 160px;
+  height: 160px;
+  background-image: url('./assets/legendary_fish.png');
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+  animation: legendaryGlow 2s infinite ease-in-out;
 }
 
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  50% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
 
@@ -238,6 +258,7 @@ button:disabled {
   color: white;
   padding: 15px 30px;
   font-size: 1.2em;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -248,42 +269,14 @@ button:disabled {
   transform: scale(1.05);
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
 .fishing-pond {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url('./fish_bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-.fish-sprite {
-  width: 96px;
-  height: 96px;
-  object-fit: contain;
-  transform: scaleX(-1);
-  transition: transform 0.3s ease;
-}
-
-/* Double size for medium and epic fish */
-.fish-sprite[alt="Medium Fish"],
-.fish-sprite[alt="Epic Fish"] {
-  width: 192px;  /* 96px * 2 */
-  height: 192px;
-}
-
-/* Triple size for large and legendary fish */
-.fish-sprite[alt="Large Fish"],
-.fish-sprite[alt="Legendary Fish"] {
-  width: 288px;  /* 96px * 3 */
-  height: 288px;
+  background-color: #87CEEB; /* Fallback color */
 }
 
 .fish-spot {
@@ -291,24 +284,39 @@ button:disabled {
   cursor: pointer;
   transition: opacity 0.2s ease;
   animation: float 3s infinite ease-in-out;
-  padding: 20px;
+  padding: 10px;
 }
 
-/* Adjust hover animations for different fish sizes */
-.fish-spot:hover .fish-sprite[alt="Medium Fish"],
-.fish-spot:hover .fish-sprite[alt="Epic Fish"] {
+.fish-spot.caught {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fish-spot[title="Small Fish"]:hover .fish-emoji {
   transform: scaleX(-1.1);
 }
 
-.fish-spot:hover .fish-sprite[alt="Large Fish"],
-.fish-spot:hover .fish-sprite[alt="Legendary Fish"] {
-  transform: scaleX(-1.05);
+.fish-spot[title="Medium Fish"]:hover .fish-emoji {
+  transform: scaleX(-1.15);
 }
 
-.fish-spot.caught .fish-sprite {
-  transform: scaleX(-1) translateY(-20px);
-  opacity: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+.fish-spot[title="Large Fish"]:hover .fish-emoji {
+  transform: scaleX(-1.2);
+}
+
+.fish-spot[title="Rare Fish"]:hover .fish-emoji {
+  transform: scaleX(-1.2);
+  filter: drop-shadow(0 0 6px rgba(121, 87, 194, 0.8));
+}
+
+.fish-spot[title="Epic Fish"]:hover .fish-emoji {
+  transform: scaleX(-1.25);
+  filter: drop-shadow(0 0 8px rgba(233, 30, 99, 0.8));
+}
+
+.fish-spot[title="Legendary Fish"]:hover .fish-emoji {
+  transform: scaleX(-1.3);
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1));
 }
 
 @keyframes float {
@@ -389,12 +397,6 @@ button:disabled {
   background-color: #45a049;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
 .money-popup {
   position: absolute;
   color: #4CAF50;
@@ -422,13 +424,14 @@ button:disabled {
 
 .title-screen {
   position: absolute;
-  width: 100vw;
+  width: calc(100vw - 200px);
   height: 100vh;
-  left: 0;
+  right: 0;
   top: 0;
-  background-image: url('./fish_bg.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-color: #87CEEB; /* Fallback color */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -512,13 +515,14 @@ button:disabled {
 
 .end-screen {
   position: absolute;
-  width: 100vw;
+  width: calc(100vw - 200px);
   height: 100vh;
-  left: 0;
+  right: 0;
   top: 0;
-  background-image: url('./fish_bg.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-color: #87CEEB; /* Fallback color */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -538,13 +542,6 @@ button:disabled {
   font-size: 2.5em;
   color: #2c3e50;
   margin-bottom: 30px;
-}
-
-.stats {
-  display: flex;
-  justify-content: space-around;
-  margin: 30px 0;
-  gap: 20px;
 }
 
 .stat-item {
