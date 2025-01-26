@@ -1,13 +1,19 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import TitleScreen from './components/TitleScreen';
+import GamePage from './components/GamePage';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <div className="container">
-        <h1 className="title">FINAGOTCHI</h1>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<TitleScreen />} />
+          <Route path="/game" element={<GamePage />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
